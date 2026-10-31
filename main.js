@@ -178,6 +178,12 @@
   addEventListener('resize', onScroll, { passive: true });
   onScroll();
 
+  /* ---------- Pause looping CSS animations when off screen ---------- */
+  const pauseIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => e.target.classList.toggle('is-offscreen', !e.isIntersecting));
+  });
+  $$('.hero, .about__media, .map').forEach((el) => pauseIO.observe(el));
+
   /* ---------- Hero grass canvas ---------- */
   const canvas = $('.grass');
   if (canvas) {
@@ -187,11 +193,11 @@
     const palette = ['#0f2a18', '#143a1f', '#1c4d27', '#24602f', '#2f7a37', '#3d9440', '#58ad46'];
 
     const build = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = Math.min(devicePixelRatio || 1, 1.5);
       W = canvas.clientWidth; H = canvas.clientHeight;
       canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.min(520, Math.floor(W / 3.2));
+      const n = Math.min(300, Math.floor(W / 5.5));
       blades = [];
       for (let i = 0; i < n; i++) {
         const depth = Math.random();
@@ -210,8 +216,12 @@
       blades.sort((a, b) => a.depth - b.depth);
     };
 
+    let lastT = 0;
     const draw = (t) => {
+      if (running && t - lastT < 24) { raf = requestAnimationFrame(draw); return; }
+      lastT = t;
       ctx.clearRect(0, 0, W, H);
+      let curColor = null;
       const time = t / 1000;
       pointer.x += (pointer.tx - pointer.x) * 0.12;
       for (const b of blades) {
@@ -224,14 +234,18 @@
         const tipY = H - Math.cos(ang) * b.h;
         const cX = b.x + Math.sin(ang * 0.5) * b.h * 0.55;
         const cY = H - b.h * 0.55;
-        ctx.beginPath();
+        if (b.c !== curColor) {
+          if (curColor) ctx.fill();
+          curColor = b.c;
+          ctx.fillStyle = b.c;
+          ctx.beginPath();
+        }
         ctx.moveTo(b.x - b.w, H + 1);
         ctx.quadraticCurveTo(cX - b.w * 0.5, cY, tipX, tipY);
         ctx.quadraticCurveTo(cX + b.w * 0.5, cY, b.x + b.w, H + 1);
         ctx.closePath();
-        ctx.fillStyle = b.c;
-        ctx.fill();
       }
+      if (curColor) ctx.fill();
       if (running) raf = requestAnimationFrame(draw);
     };
 
