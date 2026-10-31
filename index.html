@@ -13,11 +13,50 @@
 <meta property="og:image" content="img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
+<style>
+/* Loader: inlined so it paints before the main stylesheet arrives */
+.loader{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:radial-gradient(60% 50% at 50% 45%,#12291b 0%,#08130d 70%);color:#fff;font-family:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;transition:transform .8s cubic-bezier(.7,0,.2,1),border-radius .8s cubic-bezier(.7,0,.2,1)}
+.loader__in{display:grid;justify-items:center;gap:18px}
+.loader__logo{width:84px;height:auto;filter:drop-shadow(0 10px 30px rgba(155,225,93,.35));animation:lPop .6s cubic-bezier(.34,1.56,.64,1) both}
+.loader__name{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;animation:lUp .5s .08s cubic-bezier(.2,.8,.2,1) both}
+.loader__name em{font-style:normal;color:#9be15d}
+.loader__lawn{position:relative;width:260px;height:34px;margin-top:6px;border-bottom:2px solid #1a3a26;animation:lUp .5s .1s cubic-bezier(.2,.8,.2,1) both}
+.loader__tall,.loader__cut{position:absolute;left:0;right:0;bottom:0}
+.loader__tall{height:26px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath fill='%232f7a37' d='M0.0 26L2.6 13.6L3.6 26ZM2.3 26L3.2 7.4L5.4 26ZM4.2 26L3.5 7.9L7.3 26ZM6.1 26L6.0 14.9L10.0 26ZM8.5 26L8.6 2.8L12.4 26ZM10.9 26L14.9 6.0L14.4 26ZM13.1 26L17.5 9.7L17.2 26ZM15.6 26L16.1 2.3L18.7 26ZM17.6 26L18.2 14.1L20.8 26ZM19.6 26L22.3 13.1L24.2 26ZM22.5 26L24.8 10.0L26.7 26ZM25.1 26L25.2 15.0L28.2 26ZM27.1 26L28.3 9.2L31.4 26ZM29.8 26L30.8 8.7L33.9 26ZM32.3 26L33.4 4.8L36.9 26ZM35.2 26L39.1 7.6L39.3 26ZM37.8 26L42.4 11.4L42.2 26ZM40.5 26L43.4 9.3L43.8 26ZM42.5 26L41.9 8.2L45.8 26ZM44.6 26L47.1 3.8L48.9 26ZM47.3 26L50.6 11.0L52.0 26Z'/%3E%3C/svg%3E") repeat-x left bottom/48px 26px;clip-path:inset(0 0 0 0);animation:lTall .85s .25s cubic-bezier(.45,0,.25,1) both}
+.loader__cut{height:7px;border-radius:2px 2px 0 0;background:repeating-linear-gradient(90deg,#58ad46 0 20px,#4a9a3d 20px 40px);clip-path:inset(0 100% 0 0);animation:lCut .85s .25s cubic-bezier(.45,0,.25,1) both}
+.loader__mower{position:absolute;bottom:-3px;left:0;width:40px;height:40px;transform:translateX(-50%);animation:lMow .85s .25s cubic-bezier(.45,0,.25,1) both}
+.loader__clip{position:absolute;bottom:2px;left:0;width:3px;height:3px;border-radius:50%;background:#9be15d;opacity:0}
+@keyframes lPop{from{opacity:0;transform:scale(.4) rotate(-12deg)}}
+@keyframes lUp{from{opacity:0;transform:translateY(12px)}}
+@keyframes lTall{to{clip-path:inset(0 0 0 100%)}}
+@keyframes lCut{to{clip-path:inset(0 0 0 0)}}
+@keyframes lMow{to{left:100%}}
+html.loaded .loader{transform:translateY(-100%);border-radius:0 0 50% 50%/0 0 12% 12%}
+html.no-loader .loader{display:none}
+html:not(.loaded):not(.no-loader) body{overflow:hidden}
+@media (prefers-reduced-motion:reduce){.loader{display:none}}
+</style>
+<noscript><style>.loader{display:none}</style></noscript>
+<script>
+/* Show the loader once per session for 1.2s, then reveal the page */
+(function(){
+  var d=document.documentElement,seen;
+  try{seen=sessionStorage.getItem('mg-loader');sessionStorage.setItem('mg-loader','1')}catch(e){}
+  function ready(){if(window.mgReady)return;window.mgReady=true;document.dispatchEvent(new Event('mg:ready'))}
+  if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('no-loader');window.mgReady=true;return}
+  var t=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+  t(1200).then(function(){
+    d.classList.add('loaded');
+    setTimeout(ready,250);
+    setTimeout(function(){var l=document.getElementById('loader');if(l)l.remove()},900);
+  });
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
 <link rel="preload" as="image" href="img/lawn-stripes-1600.webp" imagesrcset="img/lawn-stripes-800.webp 800w, img/lawn-stripes-1600.webp 1200w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 
 <script type="application/ld+json">
 {
@@ -56,6 +95,17 @@
 </script>
 </head>
 <body>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__in">
+    <img class="loader__logo" src="img/emblem.webp" alt="" width="84" height="100" fetchpriority="high">
+    <p class="loader__name">Miracle <em>Green</em></p>
+    <div class="loader__lawn">
+      <div class="loader__tall"></div>
+      <div class="loader__cut"></div>
+      <svg class="loader__mower" viewBox="0 0 64 64"><g fill="none" stroke="#0b1a10" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path fill="#F2B33D" d="M10 34h38l6 10H8z"/><path d="M40 34 46 12h8"/><circle fill="#1d2b22" cx="16" cy="48" r="7"/><circle fill="#1d2b22" cx="46" cy="48" r="7"/><circle fill="#F2B33D" cx="16" cy="48" r="2"/><circle fill="#F2B33D" cx="46" cy="48" r="2"/></g></svg>
+    </div>
+  </div>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"><span></span></div>
 
@@ -108,11 +158,11 @@
     <h1 id="hero-title" class="hero__title" data-split>
       Lawns so green, <span class="hl">it&rsquo;s a miracle.</span>
     </h1>
-    <p class="hero__lede reveal-up" style="--d:.5s">
+    <p class="hero__lede reveal-up" style="--d:.25s">
       Mowing, landscaping, tree care and junk hauling for Merced and the Central Valley.
       Locally owned, licensed and insured, and only a text away.
     </p>
-    <div class="hero__actions reveal-up" style="--d:.65s">
+    <div class="hero__actions reveal-up" style="--d:.35s">
       <a class="btn btn--gold btn--lg magnetic" href="#quote">
         Get my free quote
         <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>
@@ -122,14 +172,14 @@
         Text 209-513-2736
       </a>
     </div>
-    <ul class="trust reveal-up" style="--d:.8s" aria-label="Credentials">
+    <ul class="trust reveal-up" style="--d:.45s" aria-label="Credentials">
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-shield"/></svg> Fully insured</li>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-home"/></svg> Locally owned</li>
       <li><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-badge"/></svg> Bus. Lic. #28780</li>
     </ul>
   </div>
 
-  <aside class="hero__card reveal-up" style="--d:1s" aria-label="How quotes work">
+  <aside class="hero__card reveal-up" style="--d:.55s" aria-label="How quotes work">
     <p class="hero__card-k">Quote in 3 steps</p>
     <ol>
       <li><b>01</b> Text us a photo</li>
@@ -584,6 +634,6 @@
   <symbol id="i-mower" viewBox="0 0 64 64"><g fill="none" stroke="#0b1a10" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path fill="#F2B33D" d="M10 34h38l6 10H8z"/><path d="M40 34 46 12h8"/><circle fill="#1d2b22" cx="16" cy="48" r="7"/><circle fill="#1d2b22" cx="46" cy="48" r="7"/><circle fill="#F2B33D" cx="16" cy="48" r="2"/><circle fill="#F2B33D" cx="46" cy="48" r="2"/></g></symbol>
 </svg>
 
-<script src="main.js?v=3" defer></script>
+<script src="main.js?v=4" defer></script>
 </body>
 </html>
