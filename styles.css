@@ -282,8 +282,10 @@ html:not(.loaded):not(.no-loader) .hero__bg img { animation-play-state: paused; 
    ========================================================= */
 .about__grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(40px, 7vw, 110px); align-items: center; }
 .about__media { position: relative; margin: 0; }
-.about__img { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4/4.6; clip-path: inset(0 round var(--r-lg)); }
-.about__img img { width: 100%; height: 115%; object-fit: cover; transform: translateY(var(--py, 0)); will-change: transform; }
+.about__img { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 1080 / 1217; clip-path: inset(0 round var(--r-lg)); }
+/* Full photo, anchored to the top so the owner's head is never cropped */
+.about__img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; transition: transform 1.2s var(--ease); }
+.about__media:hover .about__img img { transform: scale(1.03); }
 .about__tag {
   position: absolute; left: -24px; bottom: 34px; display: flex; align-items: center; gap: 12px;
   padding: 12px 18px 12px 12px; border-radius: 16px; background: #fff; box-shadow: var(--shadow);
