@@ -38,12 +38,11 @@ html:not(.loaded):not(.no-loader) body{overflow:hidden}
 </style>
 <noscript><style>.loader{display:none}</style></noscript>
 <script>
-/* Show the loader once per session for 1.2s, then reveal the page */
+/* Show the loader for 1.2s on every page load, then reveal the page */
 (function(){
-  var d=document.documentElement,seen;
-  try{seen=sessionStorage.getItem('mg-loader');sessionStorage.setItem('mg-loader','1')}catch(e){}
+  var d=document.documentElement;
   function ready(){if(window.mgReady)return;window.mgReady=true;document.dispatchEvent(new Event('mg:ready'))}
-  if(seen||matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('no-loader');window.mgReady=true;return}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('no-loader');window.mgReady=true;return}
   var t=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
   t(1200).then(function(){
     d.classList.add('loaded');
@@ -56,7 +55,7 @@ html:not(.loaded):not(.no-loader) body{overflow:hidden}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap">
 <link rel="preload" as="image" href="img/lawn-stripes-1600.webp" imagesrcset="img/lawn-stripes-800.webp 800w, img/lawn-stripes-1600.webp 1200w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 
 <script type="application/ld+json">
 {
@@ -634,6 +633,6 @@ html:not(.loaded):not(.no-loader) body{overflow:hidden}
   <symbol id="i-mower" viewBox="0 0 64 64"><g fill="none" stroke="#0b1a10" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path fill="#F2B33D" d="M10 34h38l6 10H8z"/><path d="M40 34 46 12h8"/><circle fill="#1d2b22" cx="16" cy="48" r="7"/><circle fill="#1d2b22" cx="46" cy="48" r="7"/><circle fill="#F2B33D" cx="16" cy="48" r="2"/><circle fill="#F2B33D" cx="46" cy="48" r="2"/></g></symbol>
 </svg>
 
-<script src="main.js?v=4" defer></script>
+<script src="main.js?v=5" defer></script>
 </body>
 </html>
