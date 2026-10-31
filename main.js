@@ -109,7 +109,6 @@
   sections.forEach((s) => secIO.observe(s));
 
   /* ---------- Scroll-driven effects (single rAF loop) ---------- */
-  const aboutImg = $('.about__img img');
   const stepsLine = $('.steps__line');
   const mow = $('.mow');
   const mowAfter = $('.mow__after');
@@ -150,13 +149,6 @@
     if (dock) dock.classList.toggle('is-on', y > vh * 0.7);
     lastY = y;
 
-    if (!reduce && aboutImg) {
-      const r = aboutImg.parentElement.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < vh) {
-        const p = (r.top + r.height / 2 - vh / 2) / vh;
-        aboutImg.style.setProperty('--py', (p * -60 - 30).toFixed(1) + 'px');
-      }
-    }
 
     if (stepsLine) {
       const r = stepsLine.getBoundingClientRect();
