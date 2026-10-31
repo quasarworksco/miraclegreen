@@ -74,7 +74,9 @@ p { margin: 0 0 1em; }
   font-style: italic; font-weight: 600;
   background: linear-gradient(100deg, var(--leaf-2), #2e7d32 60%, var(--leaf-2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  padding-right: .06em;
+  /* every line fragment gets its own right padding so italic overhang is painted */
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  padding-right: .16em; margin-right: -.1em;
 }
 .section--dark .hl, .hero .hl, .quote .hl, .mow .hl {
   background-image: linear-gradient(100deg, var(--leaf) 0%, var(--gold) 55%, var(--gold-2) 100%);
@@ -213,6 +215,7 @@ p { margin: 0 0 1em; }
 .split-w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .14em .1em .06em; margin: 0 -.14em -.1em -.06em; }
 .split-w > span { display: inline-block; transform: translateY(105%) rotate(4deg); transform-origin: 0 100%; transition: transform 1.1s var(--ease); transition-delay: calc(var(--i) * 70ms + 150ms); }
 .is-split .split-w > span { transform: none; }
+.split-done .split-w { overflow: visible; }
 
 /* =========================================================
    CATEGORIES (overlaps hero bottom)
