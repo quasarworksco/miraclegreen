@@ -33,6 +33,8 @@
     walk(splitEl);
     $$('.split-w', splitEl).forEach((s) => s.setAttribute('aria-hidden', 'true'));
     requestAnimationFrame(() => requestAnimationFrame(() => splitEl.classList.add('is-split')));
+    // once words have risen in, drop the mask so nothing can clip the glyphs
+    setTimeout(() => splitEl.classList.add('split-done'), reduce ? 0 : 2200);
   }
   // hero reveal-up on load
   requestAnimationFrame(() => $$('.hero .reveal-up').forEach((el) => el.classList.add('is-in')));
