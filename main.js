@@ -278,6 +278,12 @@
     });
   });
 
+  // Category cards jump to services with that filter applied
+  $$('[data-go]').forEach((a) => a.addEventListener('click', () => {
+    const btn = $(`.filters button[data-filter="${a.dataset.go}"]`);
+    if (btn) btn.click();
+  }));
+
   /* ---------- Magnetic buttons + review tilt (fine pointers only) ---------- */
   if (finePointer && !reduce) {
     $$('.magnetic').forEach((el) => {
