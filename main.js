@@ -32,12 +32,33 @@
     splitEl.setAttribute('aria-label', splitEl.textContent.trim().replace(/\s+/g, ' '));
     walk(splitEl);
     $$('.split-w', splitEl).forEach((s) => s.setAttribute('aria-hidden', 'true'));
-    requestAnimationFrame(() => requestAnimationFrame(() => splitEl.classList.add('is-split')));
-    // once words have risen in, drop the mask so nothing can clip the glyphs
-    setTimeout(() => splitEl.classList.add('split-done'), reduce ? 0 : 2200);
   }
-  // hero reveal-up on load
-  requestAnimationFrame(() => $$('.hero .reveal-up').forEach((el) => el.classList.add('is-in')));
+  // Align each gradient word to one continuous gradient spanning the headline
+  const paintGradient = () => {
+    if (!splitEl) return;
+    const box = splitEl.getBoundingClientRect();
+    $$('.hl .split-w', splitEl).forEach((w) => {
+      const r = w.getBoundingClientRect();
+      const s = w.firstElementChild;
+      s.style.setProperty('--hw', box.width.toFixed(1) + 'px');
+      s.style.setProperty('--wx', (box.left - r.left).toFixed(1) + 'px');
+    });
+  };
+  paintGradient();
+  if (document.fonts) document.fonts.ready.then(paintGradient);
+  addEventListener('resize', paintGradient, { passive: true });
+
+  // Start the hero entrance once the loader has left (or right away if it was skipped)
+  const startHero = () => {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (splitEl) splitEl.classList.add('is-split');
+      $$('.hero .reveal-up').forEach((el) => el.classList.add('is-in'));
+    }));
+    // once words have risen in, drop the mask so nothing can clip the glyphs
+    if (splitEl) setTimeout(() => splitEl.classList.add('split-done'), reduce ? 0 : 1300);
+  };
+  if (window.mgReady) startHero();
+  else document.addEventListener('mg:ready', startHero, { once: true });
 
   /* ---------- Reveal on scroll + counters ---------- */
   const countUp = (el) => {
