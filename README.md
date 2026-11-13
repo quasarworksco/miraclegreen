@@ -19,3 +19,13 @@ python3 -m http.server 8080
 
 ## Editing contact details
 Phone: search for `2095132736`. Email: search for `mailto:`.
+
+## Trial notice (DGP Global Group)
+`assets/dgp-trial.js` shows a fixed preview bar with a countdown. It is loaded just
+before `</body>` in `index.html` with `data-expires="2026-11-20T23:59:59-08:00"`
+(end of day in Merced, CA) and `data-site="Miracle Green"`.
+
+The bar publishes its height in `--dgp-trial-h`; the header, progress bar, skip
+link, hero padding, `scroll-padding-top` and the sticky "scroll to mow" stage use it.
+When the client activates the site, delete that `<script>` tag and the file. The
+`var(--dgp-trial-h, 0px)` fallbacks then resolve to zero, so nothing else changes.
