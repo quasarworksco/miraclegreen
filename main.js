@@ -158,11 +158,11 @@
 
     if (mow && stripes.length) {
       const r = mow.getBoundingClientRect();
-      const total = r.height - vh;
+      const total = r.height - (mowAfter.clientHeight || vh);
       let p = total > 0 ? -r.top / total : 0;
       p = Math.min(1, Math.max(0, p));
       const per = 1 / STRIPES;
-      const stageH = vh;
+      const stageH = mowAfter.clientHeight || vh;
       let mx = 0, my = 0, active = -1, flip = false;
       stripes.forEach((s, i) => {
         const local = Math.min(1, Math.max(0, (p - i * per) / per));
